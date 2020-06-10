@@ -1,0 +1,8 @@
+*node_modules*
+*.cache*
+*dist*
+*.idea*
+*.DS_Store*
+
+/secrets
+/node_modules
