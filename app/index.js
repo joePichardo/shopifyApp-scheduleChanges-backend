@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const accountRouter = require('./api/account');
 const gameRouter = require('./api/game');
+const themeRouter = require('./api/theme');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/account', accountRouter);
+app.use('/theme', themeRouter);
 // app.use('/game', gameRouter);
 
 app.use((err, req, res, next) => {
