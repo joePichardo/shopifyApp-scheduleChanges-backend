@@ -5,7 +5,9 @@ const DEFAULT_PROPERTIES = {
   fileKey: "",
   fileValue: "",
   ownerId: undefined,
-  backupId: undefined
+  backupId: undefined,
+  description: "",
+  deployed: false
 };
 
 class ThemeSchedule {
@@ -15,7 +17,9 @@ class ThemeSchedule {
                 fileKey,
                 fileValue,
                 ownerId,
-                backupId
+                backupId,
+                description,
+                deployed
               } = {}) {
     this.id = id || DEFAULT_PROPERTIES.id;
     this.scheduleAt = scheduleAt || DEFAULT_PROPERTIES.scheduleAt;
@@ -23,6 +27,8 @@ class ThemeSchedule {
     this.fileValue = fileValue || DEFAULT_PROPERTIES.fileValue;
     this.ownerId = ownerId || DEFAULT_PROPERTIES.ownerId;
     this.backupId = backupId || DEFAULT_PROPERTIES.backupId;
+    this.description = description || DEFAULT_PROPERTIES.description;
+    this.deployed = deployed || DEFAULT_PROPERTIES.deployed;
   }
 }
 
