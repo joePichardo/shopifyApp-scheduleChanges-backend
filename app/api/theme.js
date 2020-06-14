@@ -6,25 +6,55 @@ const { hash } = require('../account/helper');
 const { setSession, authenticatedAccount } = require('./helper');
 const ThemeBackup = require('../themeBackup/index');
 const ThemeBackupTable = require('../themeBackup/table');
+const ThemeSchedule = require('../themeSchedule/index');
+const ThemeScheduleTable = require('../themeSchedule/table');
 
 const router = new Router();
 
 router.post('/schedule', (req, res, next) => {
-  let themeBackup,
-    fileKey,
-    fileValue,
-    ownerId,
-    scheduleAt;
+  let ownerId, themeSchedule;
 
-  const { storeAddress, date, key, value } = req.body;
+  const { storeAddress, scheduleAt, fileKey, fileValue, backupId } = req.body;
   const accessToken = req.headers["x-shopify-access-token"];
 
-  scheduleAt = date;
-  fileKey = key;
-  fileValue = value;
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
 
-  console.log('fileKey', fileKey);
-  console.log('fileValue', fileValue);
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      ownerId = account.id;
+
+      themeSchedule = new ThemeSchedule({
+        scheduleAt,
+        fileKey,
+        fileValue,
+        ownerId,
+        backupId
+      });
+
+      return ThemeScheduleTable.storeThemeSchedule(themeSchedule);
+
+    })
+    .then(({ themeSchedule }) => {
+      return res.json({
+        message: 'Successfully scheduled a theme update',
+        themeSchedule
+      });
+    })
+    .catch(error => next(error));
+});
+
+router.post('/backup', (req, res, next) => {
+  let themeBackup, ownerId;
+
+  const { storeAddress, fileKey, fileValue, themeId } = req.body;
+  const accessToken = req.headers["x-shopify-access-token"];
 
   AccountTable.getAccount({ storeAddress })
     .then(({ account }) => {
@@ -42,11 +72,11 @@ router.post('/schedule', (req, res, next) => {
       themeBackup = new ThemeBackup({
         fileKey,
         fileValue,
-        ownerId
+        ownerId,
+        themeId
       });
 
       return ThemeBackupTable.storeThemeBackup(themeBackup);
-
     })
     .then(({ themeBackup }) => {
       return res.json({
@@ -54,9 +84,6 @@ router.post('/schedule', (req, res, next) => {
         themeBackup
       });
     })
-    // .then(() => {
-    //   res.json({ message: "Success" })
-    // })
     .catch(error => next(error));
 });
 
