@@ -14,7 +14,7 @@ const router = new Router();
 router.post('/schedule', (req, res, next) => {
   let ownerId, themeSchedule;
 
-  const { storeAddress, scheduleAt, fileKey, fileValue, backupId } = req.body;
+  const { storeAddress, scheduleAt, fileKey, fileValue, backupId, description } = req.body;
   const accessToken = req.headers["x-shopify-access-token"];
 
   AccountTable.getAccount({ storeAddress })
@@ -35,7 +35,8 @@ router.post('/schedule', (req, res, next) => {
         fileKey,
         fileValue,
         ownerId,
-        backupId
+        backupId,
+        description
       });
 
       return ThemeScheduleTable.storeThemeSchedule(themeSchedule);
