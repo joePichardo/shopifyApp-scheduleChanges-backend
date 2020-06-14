@@ -5,6 +5,7 @@ CREATE TABLE themeSchedule(
     "fileValue"     TEXT NOT NULL,
     "ownerId"       INTEGER NOT NULL,
     "backupId"      BIGINT NOT NULL,
+    description     TEXT NOT NULL,
     deployed        BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE,
     FOREIGN KEY ("backupId") REFERENCES themeBackup(id)
