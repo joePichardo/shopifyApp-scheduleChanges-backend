@@ -4,5 +4,6 @@ CREATE TABLE themeBackup(
     "fileKey"               TEXT NOT NULL,
     "fileValue"             TEXT NOT NULL,
     "ownerId"               INTEGER NOT NULL,
-    FOREIGN KEY ("ownerId") REFERENCES account(id)
+    "themeId"               BIGINT NOT NULL,
+    FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE
 );
