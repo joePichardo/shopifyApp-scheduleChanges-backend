@@ -1,5 +1,5 @@
 CREATE TABLE account(
     id             SERIAL PRIMARY KEY,
-    "storeAddress" VARCHAR(100),
-    "accessToken"  VARCHAR(100)
+    "storeAddress" TEXT NOT NULL,
+    "accessToken"  TEXT NOT NULL
 );
