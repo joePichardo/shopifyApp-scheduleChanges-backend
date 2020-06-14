@@ -1,9 +1,11 @@
 CREATE TABLE themeSchedule(
     id              SERIAL PRIMARY KEY,
-    "scheduleAt"    TIMESTAMP NOT NULL,
-    "settingsData"  TEXT NOT NULL,
+    "scheduleAt"    TIMESTAMP WITH TIME ZONE NOT NULL,
+    "fileKey"       TEXT NOT NULL,
+    "fileValue"     TEXT NOT NULL,
     "ownerId"       INTEGER NOT NULL,
-    "backupId"       INTEGER NOT NULL,
-    FOREIGN KEY ("ownerId") REFERENCES account(id),
+    "backupId"      BIGINT NOT NULL,
+    deployed        BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE,
     FOREIGN KEY ("backupId") REFERENCES themeBackup(id)
 );
