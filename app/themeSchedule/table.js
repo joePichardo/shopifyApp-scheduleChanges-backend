@@ -8,13 +8,14 @@ class ThemeScheduleTable {
       fileKey,
       fileValue,
       ownerId,
-      backupId
+      backupId,
+      description
     } = themeSchedule;
 
     return new Promise((resolve, reject) => {
       pool.query(
-        'INSERT INTO themeSchedule("scheduleAt", "fileKey", "fileValue", "ownerId", "backupId") VALUES($1, $2, $3, $4, $5) RETURNING *',
-        [scheduleAt, fileKey, fileValue, ownerId, backupId],
+        'INSERT INTO themeSchedule("scheduleAt", "fileKey", "fileValue", "ownerId", "backupId", "description") VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+        [scheduleAt, fileKey, fileValue, ownerId, backupId, description],
         (error, response) => {
           if (error) {
             return error
