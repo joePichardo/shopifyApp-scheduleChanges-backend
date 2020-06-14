@@ -51,6 +51,37 @@ router.post('/schedule', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.get('/schedules', (req, res, next) => {
+  let ownerId;
+
+  const accessToken = req.headers["x-shopify-access-token"];
+  const storeAddress = req.headers["store-address"];
+
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
+
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      ownerId = account.id;
+
+      return ThemeScheduleTable.getThemeSchedules(ownerId);
+
+    })
+    .then(({ themeSchedules }) => {
+      return res.json({
+        message: 'Successfully found theme schedules',
+        themeSchedules
+      });
+    })
+    .catch(error => next(error));
+});
+
 router.post('/backup', (req, res, next) => {
   let themeBackup, ownerId;
 

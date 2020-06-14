@@ -26,6 +26,25 @@ class ThemeScheduleTable {
       );
     })
   }
+
+  static getThemeSchedules(accountId) {
+
+    return new Promise((resolve, reject) => {
+      pool.query(
+        'SELECT * FROM themeSchedule WHERE "ownerId" = $1',
+        [accountId],
+        (error, response) => {
+          if (error) {
+            return reject(error);
+          }
+
+          resolve({themeSchedules: response.rows});
+        }
+      )
+    })
+  }
+
+
 }
 
 module.exports = ThemeScheduleTable;
