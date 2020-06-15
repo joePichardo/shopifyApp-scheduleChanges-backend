@@ -44,6 +44,23 @@ class ThemeScheduleTable {
     })
   }
 
+  static deleteThemeSchedule(accountId, scheduleId) {
+
+    return new Promise((resolve, reject) => {
+      pool.query(
+        'DELETE FROM themeSchedule WHERE "ownerId" = $1 AND id = $2',
+        [accountId, scheduleId],
+        (error, response) => {
+          if (error) {
+            return reject(error);
+          }
+
+          resolve();
+        }
+      )
+    })
+  }
+
 
 }
 
