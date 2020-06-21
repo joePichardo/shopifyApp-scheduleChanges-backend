@@ -114,6 +114,39 @@ router.post('/schedule/delete', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.get('/backup/:id', (req, res, next) => {
+  let ownerId;
+
+  const backupId = req.params.id;
+
+  const accessToken = req.headers["x-shopify-access-token"];
+  const storeAddress = req.headers["store-address"];
+
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
+
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      ownerId = account.id;
+
+      return ThemeBackupTable.getThemeBackup(ownerId, backupId);
+
+    })
+    .then(({themeBackup}) => {
+      return res.json({
+        message: 'Successfully deleted scheduled change',
+        themeBackup
+      });
+    })
+    .catch(error => next(error));
+});
+
 router.post('/backup', (req, res, next) => {
   let themeBackup, ownerId;
 

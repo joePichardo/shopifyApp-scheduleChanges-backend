@@ -25,6 +25,24 @@ class ThemeBackupTable {
       );
     })
   }
+
+  static getThemeBackup(accountId, backupId) {
+
+    return new Promise((resolve, reject) => {
+      pool.query(
+        'SELECT * FROM themeBackup WHERE "ownerId" = $1 AND id = $2',
+        [accountId, backupId],
+        (error, response) => {
+          if (error) {
+            return reject(error);
+          }
+
+          resolve({ themeBackup: response.rows[0] });
+        }
+      )
+    })
+  }
+
 }
 
 module.exports = ThemeBackupTable;
