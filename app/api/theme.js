@@ -114,6 +114,38 @@ router.post('/schedule/delete', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.post('/schedule/update', (req, res, next) => {
+  let ownerId;
+
+  const accessToken = req.headers["x-shopify-access-token"];
+  const storeAddress = req.headers["store-address"];
+
+  const { scheduleId, scheduleAt, fileKey, fileValue, description, deployed } = req.body;
+
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
+
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      ownerId = account.id;
+
+      return ThemeScheduleTable.updateThemeSchedule({ownerId, id: scheduleId, scheduleAt, fileKey, fileValue, description, deployed});
+
+    })
+    .then(() => {
+      return res.json({
+        message: 'Successfully updated scheduled change'
+      });
+    })
+    .catch(error => next(error));
+});
+
 router.get('/backup/:id', (req, res, next) => {
   let ownerId;
 

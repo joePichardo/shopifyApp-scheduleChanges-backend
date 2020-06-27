@@ -61,6 +61,34 @@ class ThemeScheduleTable {
     })
   }
 
+  static updateThemeSchedule({ id, ownerId, scheduleAt, fileKey, fileValue, description, deployed }) {
+    // console.log('id', id);
+    // console.log('ownerId', ownerId);
+    const settingsMap = { scheduleAt, fileKey, fileValue, description, deployed };
+
+    const validQueries = Object.entries(settingsMap).filter(([settingKey, settingValue]) => {
+      // console.log('settingKey', settingKey, 'settingValue', settingValue);
+
+      if (settingValue !== undefined) {
+        return new Promise((resolve, reject) => {
+          pool.query(
+            `UPDATE themeSchedule SET "${settingKey}" = $1 WHERE id = $2 AND "ownerId" = $3`,
+            [settingValue, id, ownerId],
+            (error, response) => {
+              if (error) {
+                return reject(error);
+              }
+
+              resolve();
+            }
+          );
+        });
+      }
+    });
+
+    return Promise.all(validQueries);
+  }
+
 
 }
 
