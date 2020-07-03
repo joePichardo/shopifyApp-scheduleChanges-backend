@@ -27,12 +27,24 @@ class ThemeScheduleTable {
     })
   }
 
-  static getThemeSchedules(accountId) {
+  static getThemeSchedules(accountId, page, deployedQuery) {
+
+    let limit = 10;
+    let offset = 0;
+
+    if (page > 1) {
+      offset = page * limit;
+    }
+
+    let deployed = "FALSE";
+    if (deployedQuery === "yes") {
+      deployed = "TRUE";
+    }
 
     return new Promise((resolve, reject) => {
       pool.query(
-        'SELECT * FROM themeSchedule WHERE "ownerId" = $1',
-        [accountId],
+        'SELECT * FROM themeSchedule WHERE "ownerId" = $1 AND deployed = $2 LIMIT $3 OFFSET $4',
+        [accountId, deployed, limit, offset],
         (error, response) => {
           if (error) {
             return reject(error);

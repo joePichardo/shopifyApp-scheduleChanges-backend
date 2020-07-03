@@ -70,7 +70,11 @@ router.get('/schedules', (req, res, next) => {
 
       ownerId = account.id;
 
-      return ThemeScheduleTable.getThemeSchedules(ownerId);
+      // ?page=2&deployed=no
+      let page = req.query.page;
+      let deployed = req.query.deployed;
+
+      return ThemeScheduleTable.getThemeSchedules(ownerId, page, deployed);
 
     })
     .then(({ themeSchedules }) => {
