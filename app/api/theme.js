@@ -73,8 +73,9 @@ router.get('/schedules', (req, res, next) => {
       // ?page=2&deployed=no
       let page = req.query.page;
       let deployed = req.query.deployed;
+      let description = req.query.description;
 
-      return ThemeScheduleTable.getThemeSchedules(ownerId, page, deployed);
+      return ThemeScheduleTable.getThemeSchedules(ownerId, page, deployed, description);
 
     })
     .then(({ themeSchedules }) => {
