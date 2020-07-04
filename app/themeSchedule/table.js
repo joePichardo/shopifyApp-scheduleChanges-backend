@@ -35,7 +35,7 @@ class ThemeScheduleTable {
     let offset = 0;
 
     if (page > 1) {
-      offset = page * limit;
+      offset = (page - 1) * limit;
     }
 
     let deployed = "FALSE";
@@ -72,6 +72,7 @@ class ThemeScheduleTable {
             return reject(error);
           }
 
+          console.log('response.rows.length', response.rows.length);
           resolve({themeSchedules: response.rows});
         }
       )
