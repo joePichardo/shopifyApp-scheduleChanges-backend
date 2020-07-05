@@ -72,7 +72,6 @@ class ThemeScheduleTable {
             return reject(error);
           }
 
-          console.log('response.rows.length', response.rows.length);
           resolve({themeSchedules: response.rows});
         }
       )
