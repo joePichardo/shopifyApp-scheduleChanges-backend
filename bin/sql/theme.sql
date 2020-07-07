@@ -6,5 +6,5 @@ CREATE TABLE theme(
     "themeStatus"   INT NOT NULL,
     FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE,
     FOREIGN KEY ("themeStatus") REFERENCES themeStatus(id),
-    UNIQUE ("ownerId", "themeId")
+    UNIQUE ("ownerId", "themeStatus")
 );
