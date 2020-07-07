@@ -8,8 +8,6 @@ dropdb -U node_user scheduled_changes_db
 createdb -U node_user scheduled_changes_db
 
 psql -U node_user scheduled_changes_db < ./bin/sql/account.sql
-psql -U node_user scheduled_changes_db < ./bin/sql/themeStatus.sql
-psql -U node_user scheduled_changes_db < ./bin/sql/theme.sql
 psql -U node_user scheduled_changes_db < ./bin/sql/themeBackup.sql
 psql -U node_user scheduled_changes_db < ./bin/sql/themeSchedule.sql
 #psql -U node_user scheduled_changes_db < ./bin/sql/game.sql
