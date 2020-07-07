@@ -1,5 +1,6 @@
 CREATE TABLE account(
-    id              SERIAL PRIMARY KEY,
-    "storeAddress"  TEXT NOT NULL,
-    "accessToken"   TEXT NOT NULL
+    id                  SERIAL PRIMARY KEY,
+    "storeAddress"      TEXT NOT NULL,
+    "accessToken"       TEXT NOT NULL,
+    "stagingThemeName"  TEXT NOT NULL,
 );
