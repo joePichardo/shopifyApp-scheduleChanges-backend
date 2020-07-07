@@ -7,8 +7,6 @@ CREATE TABLE themeSchedule(
     "backupId"      BIGINT NOT NULL,
     description     TEXT NOT NULL,
     deployed        BOOLEAN NOT NULL DEFAULT FALSE,
-    "themeId"      BIGINT NOT NULL,
     FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE,
-    FOREIGN KEY ("backupId") REFERENCES themeBackup(id),
-    FOREIGN KEY ("themeId") REFERENCES theme(id)
+    FOREIGN KEY ("backupId") REFERENCES themeBackup(id)
 );
