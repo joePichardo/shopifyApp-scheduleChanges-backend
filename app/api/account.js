@@ -24,6 +24,27 @@ router.post('/signup', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.get('/staging', (req, res, next) => {
+  const storeAddress = req.headers["store-address"];
+  const accessToken = req.headers["x-shopify-access-token"];
+
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      return res.json({
+        account
+      });
+    })
+    .catch(error => next(error));
+});
+
 router.post('/staging', (req, res, next) => {
   const { storeAddress, stagingThemeName } = req.body;
   const accessToken = req.headers["x-shopify-access-token"];
