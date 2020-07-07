@@ -68,12 +68,17 @@ router.get('/schedules', (req, res, next) => {
         throw new Error("Account not authorized.");
       }
 
+      let description = req.query.description;
+
+      if (description.length > 150) {
+        throw new Error("Description limit is 150 characters.");
+      }
+
       ownerId = account.id;
 
       // ?page=2&deployed=no
       let page = req.query.page;
       let deployed = req.query.deployed;
-      let description = req.query.description;
 
       return ThemeScheduleTable.getThemeSchedules(ownerId, page, deployed, description);
 
