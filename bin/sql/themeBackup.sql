@@ -6,5 +6,5 @@ CREATE TABLE themeBackup(
     "ownerId"               BIGINT NOT NULL,
     "themeId"               BIGINT NOT NULL,
     FOREIGN KEY ("ownerId") REFERENCES account(id) ON DELETE CASCADE,
-    FOREIGN KEY ("themeId") REFERENCES theme(id),
+    FOREIGN KEY ("themeId") REFERENCES theme(id)
 );
