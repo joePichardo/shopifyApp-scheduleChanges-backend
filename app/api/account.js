@@ -10,9 +10,6 @@ const router = new Router();
 router.post('/signup', (req, res, next) => {
   const { storeAddress, accessToken } = req.body;
 
-  console.log('storeAddress', storeAddress)
-  console.log('accessToken', accessToken)
-
   AccountTable.getAccount({ storeAddress })
     .then(({ account }) => {
       if (!account) {
@@ -20,6 +17,28 @@ router.post('/signup', (req, res, next) => {
       } else {
         return AccountTable.updateAccessToken({ storeAddress, accessToken });
       }
+    })
+    .then(() => {
+      res.json({ message: "Success" })
+    })
+    .catch(error => next(error));
+});
+
+router.post('/staging', (req, res, next) => {
+  const { storeAddress, stagingThemeName } = req.body;
+  const accessToken = req.headers["x-shopify-access-token"];
+
+  AccountTable.getAccount({ storeAddress })
+    .then(({ account }) => {
+      if (!account) {
+        throw new Error("Account not found.");
+      }
+
+      if (account.accessToken !== accessToken) {
+        throw new Error("Account not authorized.");
+      }
+
+      return AccountTable.saveAccountStagingThemeName({ storeAddress, stagingThemeName });
     })
     .then(() => {
       res.json({ message: "Success" })

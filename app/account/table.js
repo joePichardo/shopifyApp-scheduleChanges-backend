@@ -34,6 +34,22 @@ class AccountTable {
     });
   }
 
+  static saveAccountStagingThemeName({ storeAddress, stagingThemeName }) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `UPDATE account SET "stagingThemeName" = $1 WHERE "storeAddress" = $2`,
+        [stagingThemeName, storeAddress],
+        (error, response) => {
+          if (error) {
+            return reject(error);
+          }
+
+          resolve({ account: response.rows[0] });
+        }
+      )
+    });
+  }
+
   static updateAccessToken({ storeAddress, accessToken }) {
     return new Promise((resolve, reject) => {
       pool.query(
