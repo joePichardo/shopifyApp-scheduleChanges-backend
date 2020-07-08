@@ -137,3 +137,7 @@ Run `npm install` before pm2
 
 #### If running backend/frontend on separate servers
 - Run on port 80 on their respective servers 
+
+### Restart on production
+
+`pm2 restart app_name`
