@@ -135,6 +135,9 @@ Run `npm install` before pm2
 ### To run the frontend
 - Use command `sudo pm2 start npm --name frontend -- run start` based on `pm2 start npm --name "{app_name}" -- run {script_name}`
 
+### To run the backend
+- Use command `sudo pm2 start npm --name backend -- run start`
+
 #### If running backend/frontend on separate servers
 - Run on port 80 on their respective servers 
 
