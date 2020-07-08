@@ -6,10 +6,11 @@ const accountRouter = require('./api/account');
 const gameRouter = require('./api/game');
 const themeRouter = require('./api/theme');
 const AccountTable = require('./account/table');
+const frontendConfiguration = require('../secrets/frontendConfiguration');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:1234', credentials: true }));
+app.use(cors({ origin: frontendConfiguration.url, credentials: true }));
 
 // parse application/json
 app.use(bodyParser.json());
