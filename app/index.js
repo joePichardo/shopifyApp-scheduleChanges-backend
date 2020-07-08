@@ -27,7 +27,7 @@ app.post('/customers/data_request', function (req, res) {
   return res.status(200)
 })
 
-app.post('/shop/redact', function (req, res) {
+app.post('/shop/redact', function (req, res, next) {
   const {shop_id, shop_domain} = req.body;
 
   AccountTable.deleteAccount({ shop_domain })
