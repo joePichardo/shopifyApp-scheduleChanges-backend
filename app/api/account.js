@@ -8,14 +8,14 @@ const { setSession, authenticatedAccount } = require('./helper');
 const router = new Router();
 
 router.post('/signup', (req, res, next) => {
-  const { storeAddress, accessToken } = req.body;
+  const { storeAddress, accessToken, email } = req.body;
 
   AccountTable.getAccount({ storeAddress })
     .then(({ account }) => {
       if (!account) {
-        return AccountTable.storeAccount({ storeAddress, accessToken });
+        return AccountTable.storeAccount({ storeAddress, accessToken, email });
       } else {
-        return AccountTable.updateAccessToken({ storeAddress, accessToken });
+        return AccountTable.updateAccessToken({ storeAddress, accessToken, email });
       }
     })
     .then(() => {

@@ -1,12 +1,12 @@
 const pool = require('../../databasePool');
 
 class AccountTable {
-  static storeAccount({ storeAddress, accessToken }) {
+  static storeAccount({ storeAddress, accessToken, email }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO account("storeAddress", "accessToken") 
-        VALUES($1, $2)`,
-        [storeAddress, accessToken],
+        `INSERT INTO account("storeAddress", "accessToken", email) 
+        VALUES($1, $2, $3)`,
+        [storeAddress, accessToken, email],
         (error, response) => {
           if (error) {
             return reject(error);
@@ -67,11 +67,11 @@ class AccountTable {
     });
   }
 
-  static updateAccessToken({ storeAddress, accessToken }) {
+  static updateAccessToken({ storeAddress, accessToken, email }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        'UPDATE account SET "accessToken" = $1 WHERE "storeAddress" = $2',
-        [accessToken, storeAddress],
+        'UPDATE account SET "accessToken" = $1 , email = $2 WHERE "storeAddress" = $3',
+        [accessToken, email, storeAddress],
         (error, response) => {
           if (error) {
             return reject(error);
