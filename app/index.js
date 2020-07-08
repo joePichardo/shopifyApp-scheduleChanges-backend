@@ -20,11 +20,11 @@ app.use('/theme', themeRouter);
 // app.use('/game', gameRouter);
 
 app.post('/customers/redact', function (req, res) {
-  res.status(200)
+  return res.status(200)
 })
 
 app.post('/customers/data_request', function (req, res) {
-  res.status(200)
+  return res.status(200)
 })
 
 app.post('/shop/redact', function (req, res) {
