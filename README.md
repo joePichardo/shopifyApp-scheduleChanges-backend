@@ -15,7 +15,16 @@ Add user to database
 
 ## On lightsail server production
 
-Root folder `/opt/bitnami/apps/firstapp`
+- To ssh into server
+    - `chmod 600 KEYFILE`
+    - `ssh -i KEYFILE bitnami@SERVER-IP`
+ 
+- Root folder `/opt/bitnami/apps/firstapp`
+    - `cd stack`
+    - `sudo ./use_nodejs`
+    - `mkdir apps`
+    - `cd apps`
+    - `mkdir firstapp`
 
 This is to change port 80 (http) to something else - changed to port 8080 so we can run app on port 80
 > vim /opt/bitnami/apache2/conf/httpd.conf
@@ -34,6 +43,8 @@ On NPM
 > npm install -g nodemon
 >
 > npm install -g foreman
+>
+> npm install pm2@latest -g
 
 Procfile
 > frontend: parcel ./frontend/src/index.html --port 80
@@ -69,9 +80,11 @@ const APP_SECRET = 'secretString';
 module.exports = { APP_SECRET };
 ```
 
-- Inside `backend/app/index.js` change url `localhost:1234` to frontend address url
+- Inside `backend/secrets/frontendConfiguration.js` change url `localhost:1234` to frontend address url
 ```js
-app.use(cors({ origin: 'http://web.address.here', credentials: true }));
+module.exports = {
+  url: 'http://localhost:1234'
+};
 ```
 
 - Make sure you deploy `.sql` queries on database, using `pgAdmin`
@@ -114,6 +127,10 @@ https.createServer({
   cert: fs.readFileSync('server.cert')
 }, app).listen(port, () => console.log(`listen on port ${port}`));
 ```
+
+### NPM Install
+
+Run `npm install` before pm2
 
 ### To run the frontend
 - Use command `sudo pm2 start npm --name frontend -- run frontend` based on `pm2 start npm --name "{app_name}" -- run {script_name}`
