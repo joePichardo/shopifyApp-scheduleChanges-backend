@@ -17,6 +17,23 @@ class AccountTable {
     });
   }
 
+  static deleteAccount({ storeAddress }) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `DELETE
+        FROM account
+        WHERE "storeAddress" = $1`,
+        [storeAddress],
+        (error, response) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve();
+        }
+      );
+    });
+  }
+
   static getAccount({ storeAddress }) {
     return new Promise((resolve, reject) => {
       pool.query(
