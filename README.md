@@ -50,13 +50,9 @@ Procfile
 > frontend: parcel ./frontend/src/index.html --port 80
 
 On Frontend
-- Update `/frontend/src/config.js`
+- Update `.env` file 
 ```js
-const BACKEND = {
-  ADDRESS: 'http://web.address.here:3000'
-};
-
-export { BACKEND };
+ BACKEND_ADDRESS='http://localhost:3001'
 ```
 
 On Backend
@@ -123,8 +119,8 @@ var https = require('https');
 const port = 3000;
 
 https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
+  key: fs.readFileSync(__dirname + '/server.key'),
+  cert: fs.readFileSync(__dirname + '/server.crt')
 }, app).listen(port, () => console.log(`listen on port ${port}`));
 ```
 
