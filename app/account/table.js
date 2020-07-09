@@ -2,11 +2,21 @@ const pool = require('../../databasePool');
 
 class AccountTable {
   static storeAccount({ storeAddress, accessToken, email }) {
+
+    let queryArray = [storeAddress, accessToken];
+    let selectQuery = 'INSERT INTO account("storeAddress", "accessToken"';
+
+    if (email) {
+      queryArray.push(email);
+      selectQuery = ', email) VALUES($1, $2, $3)'
+    } else {
+      selectQuery += ') VALUES($1, $2)'
+    }
+
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO account("storeAddress", "accessToken", email) 
-        VALUES($1, $2, $3)`,
-        [storeAddress, accessToken, email],
+        selectQuery,
+        queryArray,
         (error, response) => {
           if (error) {
             return reject(error);
