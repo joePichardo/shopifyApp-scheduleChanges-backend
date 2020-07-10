@@ -226,4 +226,102 @@ router.post('/backup', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.get('/schedule/job', (req, res, next) => {
+
+  ThemeScheduleTable.getThemeSchedulesBeforeNow()
+    .then(({ themeSchedules }) => {
+
+      themeSchedules.forEach((scheduleItem) => {
+
+        deploySchedule(scheduleItem);
+
+      })
+
+      return true;
+
+    })
+    .then(() => {
+      return res.json({
+        message: 'Successfully deployed schedules'
+      });
+    })
+    .catch(error => next(error));
+});
+
+deploySchedule = async (scheduleItem) => {
+
+  const storeAddress = scheduleItem.storeAddress;
+  const accessToken = scheduleItem.accessToken;
+  let activeThemeId;
+
+  try {
+
+    const fetchURL = "https://" + storeAddress + "/admin/api/2019-04/themes.json";
+
+    const results = await fetch(fetchURL, {
+      headers: {
+        "X-Shopify-Access-Token": accessToken,
+      },
+    })
+      .then(response => response.json())
+      .then(json => json);
+
+    if (results.themes !== undefined) {
+      var themes = results.themes;
+      themes.forEach((theme) => {
+        if (theme.role === "main") {
+          activeThemeId = theme.id;
+        }
+      })
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+
+  if (activeThemeId) {
+    try {
+      const fetchURL = "https://" + storeAddress + "/admin/api/2019-04/themes/" + activeThemeId + "/assets.json";
+
+      const asset = {
+        key: scheduleItem.fileKey,
+        value: scheduleItem.fileValue
+      }
+
+      const results = await fetch(fetchURL, {
+        method: "PUT",
+        body: JSON.stringify(asset),
+        headers: {
+          "X-Shopify-Access-Token": accessToken,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+
+          let deployedScheduleItem = {
+            id: scheduleItem.scheduleId,
+            ownerId: scheduleItem.accountId,
+            deployed: true
+          };
+
+          fetch(`http://localhost:3001/theme/schedule/update`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              "X-Shopify-Access-Token": accessToken,
+              "store-address": storeAddress,
+            },
+            body: JSON.stringify(deployedScheduleItem)
+          })
+
+        });
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+}
+
 module.exports = router;
