@@ -82,12 +82,7 @@ class ThemeScheduleTable {
 
     return new Promise((resolve, reject) => {
       pool.query(
-        'SELECT ts.id AS "scheduleId", ts."scheduleAt", ts."fileKey", ts."fileValue", ts."ownerId" AS "accountId", ts."backupId", ts.description, ac."storeAddress", ac."accessToken"' +
-        'FROM themeschedule ts' +
-        'FULL OUTER JOIN account ac' +
-        'ON ts."ownerId" = ac.id' +
-        'WHERE ts."scheduleAt" <= NOW()' +
-        'AND ts.deployed = FALSE;',
+        'SELECT ts.id AS "scheduleId", ts."scheduleAt", ts."fileKey", ts."fileValue", ts."ownerId" AS "accountId", ts."backupId", ts.description, ac."storeAddress", ac."accessToken" FROM themeschedule ts FULL OUTER JOIN account ac ON ts."ownerId" = ac.id WHERE ts."scheduleAt" <= NOW() AND ts.deployed = FALSE',
         [],
         (error, response) => {
           if (error) {
