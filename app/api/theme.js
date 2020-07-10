@@ -285,8 +285,10 @@ deploySchedule = async (scheduleItem) => {
       const fetchURL = "https://" + storeAddress + "/admin/api/2019-04/themes/" + activeThemeId + "/assets.json";
 
       const asset = {
-        key: scheduleItem.fileKey,
-        value: scheduleItem.fileValue
+        asset: {
+          key: scheduleItem.fileKey,
+          value: scheduleItem.fileValue
+        }
       }
 
       const results = await fetch(fetchURL, {
@@ -296,33 +298,32 @@ deploySchedule = async (scheduleItem) => {
           "X-Shopify-Access-Token": accessToken,
           'Content-Type': 'application/json',
         },
-      })
-        .then(response => {
+      }).then(response => response.json())
+        .then(json => json);
 
-          let deployedScheduleItem = {
-            id: scheduleItem.scheduleId,
-            ownerId: scheduleItem.accountId,
-            deployed: true
-          };
+      if (results.asset) {
+        let deployedScheduleItem = {
+          scheduleId: scheduleItem.scheduleId,
+          ownerId: scheduleItem.accountId,
+          deployed: true
+        };
 
-          fetch(`http://localhost:3001/theme/schedule/update`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              "X-Shopify-Access-Token": accessToken,
-              "store-address": storeAddress,
-            },
-            body: JSON.stringify(deployedScheduleItem)
-          })
-
-        });
+        const updateResponse = await fetch(`http://localhost:3001/theme/schedule/update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "X-Shopify-Access-Token": accessToken,
+            "store-address": storeAddress,
+          },
+          body: JSON.stringify(deployedScheduleItem)
+        }).then(response => response.json())
+          .then(json => json);
+      }
 
     } catch (err) {
       console.log(err);
     }
   }
-
-
 }
 
 module.exports = router;
