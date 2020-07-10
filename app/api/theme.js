@@ -1,3 +1,4 @@
+require('isomorphic-fetch');
 const { Router } = require('express');
 const AccountTable = require('../account/table');
 const AccountGameTable = require('../accountGame/table');
