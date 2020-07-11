@@ -140,3 +140,5 @@ Run `npm install` before pm2
 ### Restart on production
 
 `pm2 restart app_name`
+
+- If restarting frontend, run `npm run build` then restart the frontend app
