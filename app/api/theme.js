@@ -242,8 +242,9 @@ router.get('/schedule/job', (req, res, next) => {
 
     })
     .then(() => {
+      const now = new Date();
       return res.json({
-        message: 'Successfully deployed schedules'
+        message: `Successfully deployed schedules at: ${now} \n`
       });
     })
     .catch(error => next(error));
