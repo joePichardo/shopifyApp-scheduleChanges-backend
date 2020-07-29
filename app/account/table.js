@@ -8,7 +8,7 @@ class AccountTable {
 
     if (email) {
       queryArray.push(email);
-      selectQuery = ', email) VALUES($1, $2, $3)'
+      selectQuery += ', email) VALUES($1, $2, $3)'
     } else {
       selectQuery += ') VALUES($1, $2)'
     }
